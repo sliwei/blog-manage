@@ -81,8 +81,11 @@
 <script>
   import {mavonEditor} from 'mavon-editor'
   import 'mavon-editor/dist/css/index.css'
-  import qs from 'qs'
   import moment from 'moment'
+  import {upload} from '@/api/common'
+  import {detail, edit} from '@/api/blog'
+  import {tag_list} from '@/api/tag'
+  import {category_list} from '@/api/category'
 
   export default {
 
@@ -92,12 +95,7 @@
     data() {
       return {
         wait: false, // 等待状态
-        options: [
-          {
-            value: '选项1',
-            label: '黄金糕'
-          }
-        ],
+        options: [],
         detail: { // 博客详情
           title: '',
           content: '',
@@ -129,7 +127,7 @@
 
       // 获取标签列表
       getTag() {
-        this.$Axios.get('/blog/manage/tag/tag_list').then(res => {
+        tag_list().then(res => {
           if (res.code === 200) {
             this.tagList = res.data;
           } else {
@@ -143,7 +141,7 @@
         let dat = {
           id: this.id
         };
-        this.$Axios.get(`/yun/blog/detail?${qs.stringify(dat)}`).then(res => {
+        detail(dat).then(res => {
           if (res.code === 200) {
             let tag_id = [];
             this.tagList.map(item => {
@@ -177,7 +175,7 @@
               is_evaluate: this.detail.is_evaluate ? 0 : 1,
               tag_id: tag_id,
             };
-            this.$Axios.post('/yun/blog/edit', dat).then(res => {
+            edit(dat).then(res => {
               this.wait = false;
               if (res.code === 200) {
                 this.$message.success('保存成功');
@@ -218,7 +216,7 @@
       up(file, callback) {
         let formdata = new FormData();
         formdata.append('file', file);
-        this.$Axios.post('/yun/oss/upload', formdata, '', {headers: {'Content-Type': 'multipart/form-data'}}).then(res => {
+        upload(formdata).then(res => {
           if (res.code === 200) {
             callback(`${res.data.url}?x-oss-process=style/bstu.cn`)
           } else {

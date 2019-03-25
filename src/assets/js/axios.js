@@ -1,128 +1,95 @@
 import axios from 'axios'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-// import Promise from 'bluebird';
-// // import {message} from 'antd';
+import {Message} from 'element-ui'
 
-// window.Promise = Promise;
-// Promise.config({
-//     longStackTraces: true,
-//     warnings: false // note, run node with --trace-warnings to see full stack traces for warnings
-// });
+// axios 配置
+axios.defaults.timeout = 8000;
 
-// 默认服务地址，数组类型
-// axios.defaults.baseURI = defUrl[0];
-// 请求头参考
-// https://www.jianshu.com/p/c81ec1a547ad
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'; // Form Data 模式
-// axios.defaults.headers.post['Content-Type'] = 'application/json'; // Request Payload 模式
-// axios.defaults.headers.post['Content-Type'] = 'multipart/form-data'; // Form Data 文件流模式(与x-www-form-urlencoded相似)
-axios.defaults.headers.common['Authorization'] = sessionStorage.getItem("token");
-
-/**
- * lw get统一请求
- * @param url 地址 例如：'/api/getList?page=1&index=1' Query String Parameters 模式，参数可使用qs将json转换成"page=1&index=1"格式
- * @param name 地址名称
- * @param config 配置
- */
-const get = (url, name = 'defUrl', config) => {
-  let getUrl = window[name] + url;
-  return new Promise((resolve, reject) => {
-    NProgress.start();
-    NProgress.set(0.5);
-    NProgress.inc();
-    axios.get(getUrl).then(res => {
-      NProgress.done();
-      switch (res.data.code) {
-        case 401:
-          window.location.href = '/';
-          break;
-        default:
-          resolve(res.data);
-          break;
-      }
-    }).catch(function (error) {
-      NProgress.done();
-      if (error.response) {
-        switch (error.response.status) {
-          case 500:
-            // message.error(error.response.data.error);
-            break;
-          case 401:
-            window.location.href = '/';
-            // message.warn('用户信息失效！请先登录');
-            break;
-          default:
-            // message.warn('连接错误！');
-            break;
-        }
-      } else {
-        // message.warn('连接超时！');
-      }
-      reject()
-    });
-  })
+// 异常处理
+const error = (dat = {}) => {
+  switch (parseInt(dat.code)) {
+    case 0:
+      Message.error(dat.message);
+      break;
+    case 1:
+      Message.error(dat.message);
+      break;
+    case 200:
+      Message.error(dat.message);
+      break;
+    case 400:
+      Message.error(dat.message);
+      break;
+    case 401:
+      window.location.href = '/';
+      Message.error(dat.message);
+      break;
+    case 403:
+      Message.error(dat.message);
+      break;
+    case 404:
+      Message.error(dat.message);
+      break;
+    case 500:
+      Message.error(dat.message);
+      break;
+    case 503:
+      Message.error(dat.message);
+      break;
+    default:
+      Message.error(dat.message || '网络异常');
+      break;
+  }
 };
 
-/**
- * lw post 统一请求
- * @param url 地址 例如：'/api/getList'
- * @param parms 支持 Query String Parameters、Form Data、Request Payload
- * @param name 地址名称
- * @param config 配置
- */
-const post = (url, parms, name = 'defUrl', config) => {
-  console.log(parms);
-  !name && (name = 'defUrl');
-  let postUrl = window[name] + url;
+// 请求拦截器
+axios.interceptors.request.use(function (req) {
+  NProgress.start();
+  NProgress.set(0.5);
+  NProgress.inc();
+  return req;
+}, function (error) {
+  console.log(error);
+  return Promise.reject(error);
+});
+
+// 响应拦截器
+axios.interceptors.response.use(function (res) {
+  NProgress.done();
+  if (res.data.code === 200) {
+    return res;
+  } else {
+    error(res.data);
+    return {};
+  }
+}, function (error) {
+  NProgress.done();
+  error(error.response.data);
+  return Promise.reject(error);
+});
+
+// 封装请求
+export default (url, options) => {
+  let opt = options || {};
+  opt.token = sessionStorage.getItem("token") || '';
+  let headers = opt.headers || {'Content-Type': 'application/json'};
   return new Promise((resolve, reject) => {
-    NProgress.start();
-    NProgress.set(0.5);
-    NProgress.inc();
-    axios.post(postUrl, parms).then(res => {
-      NProgress.done();
-      switch (res.data.code) {
-        case 401:
-          window.location.href = '/';
-          break;
-        default:
-          resolve(res.data);
-          break;
-      }
-    }).catch(function (error) {
-      NProgress.done();
-      if (error.response) {
-        switch (error.response.status) {
-          case 500:
-            // message.error(error.response.data.error);
-            break;
-          case 401:
-            window.location.href = '/';
-            // message.warn('用户信息失效！请先登录');
-            break;
-          default:
-            // message.warn('连接错误！');
-            break;
-        }
-      } else {
-        // message.warn('连接超时！');
-      }
-      reject()
-    });
+    axios({
+      method: opt.type || 'GET',
+      url: url,
+      baseURL: opt.baseURL || defUrl,
+      params: opt.params || {},
+      // 判断是否有自定义头部，以对参数进行序列化。不定义头部，默认对参数序列化为查询字符串。
+      data: opt.data || {},
+      responseType: opt.dataType || 'json',
+      withCredentials: opt.withCredentials || false,
+      // 设置默认请求头
+      headers: {...headers, 'Authorization': opt.token}
+    }).then(res => {
+      resolve(res.data || {})
+    }).catch(error => {
+      reject(error)
+    })
   })
-};
-
-function setAuthorization(token) {
-  axios.defaults.headers.common['Authorization'] = token;
-}
-
-function setPostContentType(contentType) {
-  axios.defaults.headers.post['Content-Type'] = contentType;
-}
-
-export default {
-  get,
-  post,
-  setAuthorization,
-  setPostContentType
 }

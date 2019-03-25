@@ -131,7 +131,8 @@
 </template>
 
 <script>
-  import qs from 'qs'
+  import {category_list} from '@/api/category'
+  import {server_list, blog_status} from '@/api/blog'
 
   export default {
     data() {
@@ -155,7 +156,7 @@
     methods: {
       // 获取分类
       getCategoryList() {
-        this.$Axios.get('/yun/blog/category_list').then(res => {
+        category_list().then(res => {
           if (res.code === 200) {
             this.categoryList = res.data;
           } else {
@@ -188,7 +189,7 @@
       },
       // 获取数据
       getList() {
-        this.$Axios.get(`/yun/blog/server_list?${qs.stringify(this.param)}`).then(res => {
+        server_list(this.param).then(res => {
           console.log(res);
           if (res.code === 200) {
             this.list = [];
@@ -208,7 +209,7 @@
       // 删除
       del(id) {
         let dat = {id: id, sta: 1};
-        this.$Axios.post('/yun/blog/blog_status', dat).then(res => {
+        blog_status(dat).then(res => {
           if (res.code === 200) {
             this.$message.success('删除成功');
             this.$refs[id].doClose();
@@ -221,7 +222,7 @@
       // 设为草稿
       setDraft(id, e) {
         let dat = {id: id, draft: e ? 1 : 0};
-        this.$Axios.post('/yun/blog/blog_status', dat).then(res => {
+        blog_status(dat).then(res => {
           if (res.code === 200) {
             this.$message.success('设置成功');
             this.$refs[id].doClose();

@@ -73,6 +73,7 @@
 </template>
 
 <script>
+  import {friend_list, operation_friend} from '@/api/friend'
 
   export default {
     data() {
@@ -94,7 +95,7 @@
 
       // 获取友链列表
       getFriendList() {
-        this.$Axios.get('/yun/blog/friend_list').then(res => {
+        friend_list().then(res => {
           if (res.code === 200) {
             this.friendList = res.data;
           } else {
@@ -109,7 +110,7 @@
           id: id,
           sta: 1,
         };
-        this.$Axios.post('/yun/blog/operation_friend', dat).then(res => {
+        operation_friend(dat).then(res => {
           if (res.code === 200) {
             this.$message.success('删除成功');
             this.getFriendList();
@@ -141,7 +142,7 @@
               title: this.friend.title,
               website: this.friend.website,
             };
-            this.$Axios.post('/yun/blog/operation_friend', dat).then(res => {
+            operation_friend(dat).then(res => {
               this.friendSta = false;
               this.wait = false;
               if (res.code === 200) {

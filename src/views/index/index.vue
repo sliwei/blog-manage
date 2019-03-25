@@ -6,6 +6,7 @@
 
 <script>
   import Layout from '@/components/Layout';
+  import {info} from '@/api/login'
 
   export default {
     components: {
@@ -13,7 +14,7 @@
     },
     methods: {
       info() {
-        this.$Axios.get('/yun/blog/info');
+        info()
       },
     },
     created() {

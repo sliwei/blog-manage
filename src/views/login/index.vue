@@ -26,6 +26,8 @@
 
 <script>
   import MD5 from 'js-md5'
+  import {login} from '@/api/login'
+  import {code} from '@/api/verification'
 
   export default {
 
@@ -45,7 +47,7 @@
     },
     methods: {
       getCode() {
-        this.$Axios.get('/blog/verification/code?w=100&h=40').then(res => {
+        code({w: 100, h: 40}).then(res => {
           if (res.code === 200) {
             this.svg = res.data.svg;
             this.dat.key = res.data.key;
@@ -63,7 +65,7 @@
               code: this.dat.code,
               key: this.dat.key,
             };
-            this.$Axios.post('/yun/blog/login', dat).then(res => {
+            login(dat).then(res => {
               if (res.code === 200) {
                 this.$message.success('登录成功');
                 this.$router.replace({path: '/admin'});

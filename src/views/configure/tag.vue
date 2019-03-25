@@ -61,6 +61,7 @@
 </template>
 
 <script>
+  import {tag_list, operation_tag} from '@/api/tag'
 
   export default {
     data() {
@@ -81,7 +82,7 @@
 
       // 获取标签列表
       getTagList() {
-        this.$Axios.get('/blog/manage/tag/tag_list').then(res => {
+        tag_list().then(res => {
           if (res.code === 200) {
             this.tagList = res.data;
           } else {
@@ -96,7 +97,7 @@
           id: id,
           sta: 1,
         };
-        this.$Axios.post('/yun/blog/operation_tag', dat).then(res => {
+        operation_tag(dat).then(res => {
           if (res.code === 200) {
             this.$message.success('删除成功');
             this.getTagList();
@@ -127,7 +128,7 @@
               id: this.tag.id,
               name: this.tag.name,
             };
-            this.$Axios.post('/yun/blog/operation_tag', dat).then(res => {
+            operation_tag(dat).then(res => {
               this.tagSta = false;
               this.wait = false;
               if (res.code === 200) {

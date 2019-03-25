@@ -159,8 +159,9 @@
 </template>
 
 <script>
-  import qs from 'qs'
   import moment from 'moment'
+  import {comment_list, evaluate_del, evaluate_examine} from '@/api/comment'
+  import {blog_status} from '@/api/blog'
 
   export default {
     data() {
@@ -206,7 +207,7 @@
 
         console.log(this.param);
 
-        this.$Axios.get(`/yun/blog/comment_list?${qs.stringify(this.param)}`).then(res => {
+        comment_list(this.param).then(res => {
           console.log(res);
           if (res.code === 200) {
             this.list = res.data.list;
@@ -219,10 +220,11 @@
       // 删除
       del(id) {
         let dat = {id: id, sta: 1};
-        this.$Axios.post('/yun/blog/evaluate_del', dat).then(res => {
+        evaluate_del(dat).then(res => {
           if (res.code === 200) {
             this.$message.success('删除成功');
             this.$refs[id].doClose();
+            this.getList();
           } else {
             this.$message.error(res.message);
           }
@@ -231,7 +233,7 @@
       // 设为草稿
       setDraft(id, e) {
         let dat = {id: id, draft: e ? 1 : 0};
-        this.$Axios.post('/yun/blog/blog_status', dat).then(res => {
+        blog_status(dat).then(res => {
           if (res.code === 200) {
             this.$message.success('设置成功');
             this.$refs[id].doClose();
@@ -251,7 +253,7 @@
           id: this.examineDat.id,
           sta: sta,
         };
-        this.$Axios.post('/yun/blog/evaluate_examine', dat).then(res => {
+        evaluate_examine(dat).then(res => {
           this.examineLoading = false;
           if (res.code === 200) {
             this.$message.success('审核成功');

@@ -84,6 +84,7 @@
 </template>
 
 <script>
+  import {sys} from '@/api/admin'
 
   export default {
     data() {
@@ -96,7 +97,7 @@
     },
     methods: {
       getSys() {
-        this.$Axios.get('/yun/blog/sys').then(res => {
+        sys().then(res => {
           if (res.code === 200) {
             this.sys = res.data;
             this.percentage = parseInt(parseInt(this.sys.freemem) / parseInt(this.sys.totalmem) * 100);

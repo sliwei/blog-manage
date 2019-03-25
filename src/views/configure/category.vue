@@ -61,6 +61,7 @@
 </template>
 
 <script>
+  import {category_list, operation_category} from '@/api/category'
 
   export default {
     data() {
@@ -81,7 +82,7 @@
 
       // 获取分类列表
       getCategoryList() {
-        this.$Axios.get('/yun/blog/category_list').then(res => {
+        category_list().then(res => {
           if (res.code === 200) {
             this.categoryList = res.data;
           } else {
@@ -96,9 +97,10 @@
           id: id,
           sta: 1,
         };
-        this.$Axios.post('/yun/blog/operation_category', dat).then(res => {
+        operation_category(dat).then(res => {
           if (res.code === 200) {
             this.$message.success('删除成功');
+            this.$refs[id].doClose();
             this.getCategoryList();
           } else {
             this.$message.error(res.message);
@@ -127,7 +129,7 @@
               id: this.category.id,
               name: this.category.name,
             };
-            this.$Axios.post('/yun/blog/operation_category', dat).then(res => {
+            operation_category(dat).then(res => {
               this.categorySta = false;
               this.wait = false;
               if (res.code === 200) {

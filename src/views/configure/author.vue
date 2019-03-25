@@ -19,6 +19,7 @@
 </template>
 
 <script>
+  import {get_configure, set_configure} from '@/api/configure'
 
   export default {
     data() {
@@ -34,7 +35,7 @@
 
       // 获取设置
       getConfigure() {
-        this.$Axios.get('/yun/blog/get_configure').then(res => {
+        get_configure().then(res => {
           if (res.code === 200) {
             this.configure = res.data;
             this.configure.map(item => {
@@ -52,7 +53,7 @@
           c_key: name,
           val: this[name],
         };
-        this.$Axios.post('/yun/blog/set_configure', dat).then(res => {
+        set_configure(dat).then(res => {
           if (res.code === 200) {
             this.$message.success('保存成功');
           } else {

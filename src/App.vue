@@ -3,7 +3,6 @@
 </template>
 
 <script>
-
   export default {
     methods: {
       over() {
