@@ -35,7 +35,7 @@ const pre = {
 const prod = {
   NODE_ENV: 'production',
   dist: './dist/prod',
-  publicPath: '/',
+  publicPath: 'https://i.bstu.cn/static/blog-manage/',
   url: {
     baseURL: '"https://api.bstu.cn"',
     otherURL: '"https://api.bstu.cn"',
