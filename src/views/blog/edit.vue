@@ -45,20 +45,20 @@
 
       </el-form-item>
 
-      <!--<el-form-item label="分类" prop="tag_id">-->
-      <!--<el-select v-model="value" placeholder="请选择">-->
-      <!--<el-option-->
-      <!--v-for="item in options"-->
-      <!--:key="item.value"-->
-      <!--:label="item.label"-->
-      <!--:value="item.value">-->
-      <!--</el-option>-->
-      <!--</el-select>-->
-      <!--</el-form-item>-->
+      <el-form-item label="分类" prop="category_id">
+        <el-select v-model="detail.category_id" placeholder="请选择">
+          <el-option
+              v-for="item in categoryList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
 
       <el-form-item label="标签" prop="tag_id">
         <el-checkbox-group v-model="detail.tag_id">
-          <el-checkbox :label="item.name" name="tag_id" v-for="(item, i) in tagList" :key="i"></el-checkbox>
+          <el-checkbox :label="item.id" v-for="(item, i) in tagList" :key="i">{{item.name}}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item label="自定义发布时间" prop="time">
@@ -95,7 +95,6 @@
     data() {
       return {
         wait: false, // 等待状态
-        options: [],
         detail: { // 博客详情
           title: '',
           content: '',
@@ -108,19 +107,21 @@
         },
         id: this.$route.query.id, // 修改时传的id
         tagList: [], // 标签的列表
+        categoryList: [], // 标签的列表
         rules: { // 校验
           title: [{required: true, message: '请输入标题', trigger: 'blur'},],
           markdown: [{required: true, message: '请输入内容', trigger: 'blur'},],
           img: [{required: true, message: '请上传首图', trigger: 'blur'},],
           tag_id: [{required: true, message: '请选择标签', trigger: 'blur'},],
-          // time: [{ required: true, message: '请输入活动名称', trigger: 'blur' },],
+          category_id: [{required: true, message: '请选择分类', trigger: 'blur'},],
         },
       }
     },
-    async created() {
-      await this.getTag();
+    created() {
+      this.getTag();
+      this.getCategory();
       if (this.id) {
-        await this.getDetail();
+        this.getDetail();
       }
     },
     methods: {
@@ -136,6 +137,17 @@
         })
       },
 
+      // 获取标签列表
+      getCategory() {
+        category_list().then(res => {
+          if (res.code === 200) {
+            this.categoryList = res.data;
+          } else {
+            this.$message.error(res.message);
+          }
+        })
+      },
+
       // 获取博客详情
       getDetail() {
         let dat = {
@@ -144,16 +156,17 @@
         detail(dat).then(res => {
           if (res.code === 200) {
             let tag_id = [];
-            this.tagList.map(item => {
-              item.id === res.data.tag_id && (tag_id = [item.name]);
+            let tag_list = res.data.tag_list || [];
+            tag_list.map(item => {
+              tag_id.push(item.id);
             });
-            console.log(tag_id);
             this.detail = {
               ...res.data,
               tag_id: tag_id,
               is_evaluate: res.data.is_evaluate ? false : true,
               time: moment(res.data.time),
             };
+            console.log(this.detail);
           } else {
             this.$message.error(res.message);
           }
@@ -164,16 +177,11 @@
       save(is_draft) {
         this.$refs.blog.validate((valid) => {
           if (valid) {
-            let tag_id = 0;
-            this.tagList.map(item => {
-              this.detail.tag_id[0] === item.name && (tag_id = item.id);
-            });
             this.wait = true;
             let dat = {
               ...this.detail,
               is_draft: is_draft ? 1 : 0,
               is_evaluate: this.detail.is_evaluate ? 0 : 1,
-              tag_id: tag_id,
             };
             edit(dat).then(res => {
               this.wait = false;

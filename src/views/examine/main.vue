@@ -51,6 +51,9 @@
             label="书写人"
             align="center"
             width="80">
+          <template slot-scope="scope">
+            {{scope.row.c_user && scope.row.c_user.name}}
+          </template>
         </el-table-column>
         <el-table-column
             prop="create_time"
@@ -74,9 +77,9 @@
         </el-table-column>
         <el-table-column
             label="操作"
-            width="230">
+            width="240">
           <template slot-scope="scope">
-            <a v-if="!scope.row.type" target="_blank" :href="`http://lwc.bstu.cn/detail/${scope.row.code}`">
+            <a v-if="!scope.row.type" target="_blank" :href="`http://lwc.bstu.cn/detail/${scope.row.blog.code}`">
               <el-button size="mini">查看原文</el-button>
             </a>
             <span v-if="scope.row.is_pass === 0">
@@ -133,8 +136,8 @@
 
           <p v-if="!examineDat.type">原文:</p>
 
-          <div v-if="!examineDat.type" class="look">
-            <a target="_blank" :href="`http://lwc.bstu.cn/detail/${examineDat.code}`">
+          <div v-if="!examineDat.type && examineDat.blog" class="look">
+            <a target="_blank" :href="`http://lwc.bstu.cn/detail/${examineDat.blog.code}`">
               <span>{{examineDat.blog_title}}</span>
             </a>
           </div>

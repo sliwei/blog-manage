@@ -73,7 +73,6 @@
                 sessionStorage.setItem('name', res.data.name);
                 sessionStorage.setItem('user', res.data.user);
                 sessionStorage.setItem('id', res.data.id);
-                this.$Axios.setAuthorization(res.data.token);
               } else if (res.code === 1) {
                 this.getCode();
               } else {

@@ -2,26 +2,23 @@ var path = require('path');
 var webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const conf = require('./config');
 
-const NODE_ENV = process.env.NODE_ENV || 'development';
-const FILE_ENV = process.env.FILE_ENV || 'test';
+const FILE_ENV = process.env.ENV || 'dev';
+const NODE_ENV = conf[FILE_ENV].NODE_ENV;
+
 // 环境 development
-console.warn(`打包环境为：${NODE_ENV}`);
+console.warn(`ENV环境为：${NODE_ENV}`);
 console.warn(`配置文件为：${FILE_ENV}\n`);
 
 const env = {
   development: {
     devtool: 'source-map',
-    output: {
-      path: path.resolve(__dirname, './dist'),
-      filename: '[name].js',
-      publicPath: '/'
-    },
+    output: {},
     stats: {},
     devServer: {
       clientLogLevel: 'warning',
@@ -145,8 +142,9 @@ const env = {
       // 生成环境
       new webpack.DefinePlugin({
         'process.env': {
-          NODE_ENV: '"production"'
-        }
+          NODE_ENV: '"development"'
+        },
+        URL: conf[FILE_ENV].url
       }),
       // 样式打包
       new ExtractTextPlugin({filename: '[name].[contenthash:4].bundle.css', allChunks: true,}),
@@ -154,22 +152,15 @@ const env = {
       new HtmlWebpackPlugin({
         template: './index.html'
       }),
-      // 拷贝资源文件
-      new CopyWebpackPlugin([
-        {
-          from: `static/globalvar.test.js`,
-          to: 'static/js/globalvar.js'
-        }
-      ])
     ],
   },
   production: {
     devtool: false,
     output: {
-      path: path.resolve(__dirname, './dist'),
+      path: path.resolve(__dirname, conf[FILE_ENV].dist),
       filename: 'static/js/[name].[chunkhash:5].chunk.js',
       chunkFilename: 'static/js/[name].[chunkhash:5].chunk.js',
-      publicPath: '/'
+      publicPath: conf[FILE_ENV].publicPath
     },
     stats: {
       colors: true,
@@ -190,6 +181,7 @@ const env = {
           test: /\.css$/,
           use: ExtractTextPlugin.extract({
             fallback: 'vue-style-loader',
+            publicPath: '../../',
             use: [
               {
                 loader: 'css-loader',
@@ -252,6 +244,7 @@ const env = {
               }),
               less: ExtractTextPlugin.extract({
                 fallback: 'vue-style-loader',
+                publicPath: '../../',
                 use: [
                   {
                     loader: 'css-loader',
@@ -289,10 +282,11 @@ const env = {
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: '"production"'
-        }
+        },
+        URL: conf[FILE_ENV].url
       }),
       // 删除旧文件
-      new CleanWebpackPlugin(['./dist/*'], {
+      new CleanWebpackPlugin(conf[FILE_ENV].dist, {
         root: __dirname, // 根目录
         verbose: true, // 开启在控制台输出信息
         dry: false // 启用删除文件
@@ -374,13 +368,6 @@ const env = {
         children: true,
         minChunks: 3
       }),
-      // 拷贝资源文件
-      new CopyWebpackPlugin([
-        {
-          from: `static/globalvar.${FILE_ENV}.js`,
-          to: 'static/js/globalvar.js'
-        }
-      ])
     ],
   }
 };

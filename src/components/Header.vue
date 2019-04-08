@@ -37,7 +37,6 @@
             break;
           case 'out': // 退出
             sessionStorage.clear();
-            this.$Axios.setAuthorization('');
             this.$router.push('/');
             break;
         }

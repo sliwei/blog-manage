@@ -3,7 +3,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import {Message} from 'element-ui'
 
-// axios 配置
+// axios 超时
 axios.defaults.timeout = 8000;
 
 // 异常处理
@@ -63,10 +63,10 @@ axios.interceptors.response.use(function (res) {
     error(res.data);
     return {};
   }
-}, function (error) {
+}, function (e) {
   NProgress.done();
-  error(error.response.data);
-  return Promise.reject(error);
+  error(e.response ? e.response.data : '');
+  return Promise.reject(e);
 });
 
 // 封装请求
@@ -78,7 +78,7 @@ export default (url, options) => {
     axios({
       method: opt.type || 'GET',
       url: url,
-      baseURL: opt.baseURL || defUrl,
+      baseURL: opt.baseURL || URL[opt.otherURL] || URL.baseURL,
       params: opt.params || {},
       // 判断是否有自定义头部，以对参数进行序列化。不定义头部，默认对参数序列化为查询字符串。
       data: opt.data || {},

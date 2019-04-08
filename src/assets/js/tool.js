@@ -259,58 +259,6 @@ const calc = {
 };
 
 /**
- * lw 调用满集APP方法
- * @param appDat
- */
-const callApp = appDat => {
-  // 设备信息
-  let u = navigator.userAgent;
-  // android终端
-  let isAndroid = u.indexOf('Android') > -1;
-  // ios终端
-  let isIOS = /iPad|iPod|iPhone/i.test(u);
-  appDat = JSON.stringify(appDat);
-  try {
-    if (isAndroid) {
-      window.android.clickOnAndroid(appDat);
-    } else if (isIOS) {
-      window.webkit.messageHandlers.Native.postMessage(appDat);
-    }
-  } catch (e) {
-    console.log('调用APP失败');
-  }
-};
-
-/**
- * 是否满集内app打开
- * @returns {boolean}
- */
-const isMJ = () => {
-  let sta = false;
-  if (sessionStorage.getItem('browseType')) {
-    sta = true;
-  } else if (('android' in window && 'clickOnAndroid' in window.android) || ('webkit' in window && 'messageHandlers' in window.webkit)) {
-    sta = true;
-  }
-  return sta;
-};
-
-/**
- * lw 根据名称获取路由地址
- * @param vue this
- * @param name 名称
- * @returns {string}
- */
-const getRoutesPath = (vue, name) => {
-  let routes = vue.$router.options.routes;
-  let path = '';
-  routes.map(item => {
-    name === item.name && (path = item.path)
-  });
-  return path;
-};
-
-/**
  * lw 750基数上的px自动转换
  * @param px
  * @returns {number}
@@ -334,8 +282,5 @@ export default {
   formatDate,
   GetQueryString,
   calc,
-  callApp,
-  isMJ,
-  getRoutesPath,
   winSize
 }
