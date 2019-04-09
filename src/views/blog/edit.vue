@@ -226,7 +226,7 @@
         formdata.append('file', file);
         upload(formdata).then(res => {
           if (res.code === 200) {
-            callback(`${res.data.url}?x-oss-process=style/bstu.cn`)
+            callback(res.data.url)
           } else {
             this.$message.error(res.message);
           }
