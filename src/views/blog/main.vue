@@ -254,7 +254,7 @@
 
     .list_img {
       width: 60px;
-      height: 60px;
+      height: 40px;
     }
   }
 </style>
