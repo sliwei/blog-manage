@@ -38,7 +38,7 @@
 
         <el-alert
             style="margin-top: 10px"
-            title="首图尺寸 1.5 : 1 最佳"
+            title="首图尺寸 3 : 2 最佳"
             type="info"
             show-icon>
         </el-alert>
