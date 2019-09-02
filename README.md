@@ -56,7 +56,7 @@ blog-manage
   webpack.config.js     // 打包配置
 
 # 线上环境文件(打包完成后，Jenkins或复制以下文件到线上访问即可)
-blog-serve
+blog-manage
   dist
     tets                // 打包生成测试文件
     pre                 // 打包生成预发文件

@@ -70,6 +70,7 @@
                 this.$message.success('登录成功');
                 this.$router.replace({path: '/admin'});
                 sessionStorage.setItem('token', res.data.token);
+                sessionStorage.setItem('head_img', res.data.head_img);
                 sessionStorage.setItem('name', res.data.name);
                 sessionStorage.setItem('user', res.data.user);
                 sessionStorage.setItem('id', res.data.id);
