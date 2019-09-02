@@ -3,7 +3,7 @@ import fetch from '@/assets/js/axios';
 /**
  * lw 友链列表
  */
-const friend_list = params => fetch('/blog/manage/friend/friend_list', {params: params, type: 'GET'});
+const friend_list = params => fetch('/blog/manage/friend/friend_list', {params: params, type: 'POST'});
 /**
  * lw 添加、修改、删除友链
  * @param id 编号
