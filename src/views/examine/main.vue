@@ -79,7 +79,7 @@
             label="操作"
             width="240">
           <template slot-scope="scope">
-            <a v-if="!scope.row.type" target="_blank" :href="`http://lwc.bstu.cn/detail/${scope.row.blog.code}`">
+            <a v-if="!scope.row.type && scope.row.blog" target="_blank" :href="`https://bstu.cn/detail/${scope.row.blog.code}`">
               <el-button size="mini">查看原文</el-button>
             </a>
             <span v-if="scope.row.is_pass === 0">
@@ -137,7 +137,7 @@
           <p v-if="!examineDat.type">原文:</p>
 
           <div v-if="!examineDat.type && examineDat.blog" class="look">
-            <a target="_blank" :href="`http://lwc.bstu.cn/detail/${examineDat.blog.code}`">
+            <a target="_blank" :href="`https://bstu.cn/detail/${examineDat.blog.code}`">
               <span>{{examineDat.blog_title}}</span>
             </a>
           </div>
