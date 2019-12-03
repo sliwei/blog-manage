@@ -2,21 +2,21 @@
   <div class="bg">
     <div class="mask"></div>
     <div class="login">
-      <div class="title">登录</div>
+      <div class="title">登&emsp;录</div>
       <el-form status-icon label-position="top" :model="dat" ref="login" @submit.native.prevent>
-        <el-form-item prop="user" label="账号" :rules="[{ required: true, message: '账号不能为空'}]">
+        <el-form-item prop="user" label="账号" :rules="[{ required: true, message: ' '}]">
           <el-input v-model="dat.user" style="width: 220px" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item prop="password" label="密码" :rules="[{ required: true, message: '密码不能为空'}]">
+        <el-form-item prop="password" label="密码" :rules="[{ required: true, message: ' '}]">
           <el-input v-model="dat.password" style="width: 220px" type="password" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item prop="code" label="验证码" :rules="[{ required: true, message: '验证码不能为空'}]">
+        <el-form-item prop="code" label="验证码" :rules="[{ required: true, message: ' '}]">
           <el-input class="code_input" v-model="dat.code" style="width: 114px" autocomplete="off"></el-input>
           <div class="code" v-html="svg" @click="getCode"></div>
         </el-form-item>
         <el-form-item>
           <!--<el-button type="primary" @click="submitForm()">登录</el-button>-->
-          <el-button type="primary" @click="submitForm()" native-type="submit">登录</el-button>
+          <el-button type="primary" @click="submitForm()" native-type="submit">登&emsp;录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -92,6 +92,13 @@
 <style lang="less" scoped>
   @import "~@/assets/less/theme.less";
 
+  /deep/ .el-input__inner {
+    border: 1px solid #333;
+    background-color: transparent;
+    border-radius: 0;
+    box-shadow: 4px 4px 0 rgba(51, 51, 51, .5);
+  }
+
   .bg {
     width: 100%;
     height: 100vh;
@@ -119,11 +126,12 @@
     /* width: 300px; */
     margin: 0 auto;
     z-index: 2;
+    box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.4);
 
     .title {
       color: #666666;
-      font-size: 18px;
-      font-weight: bold;
+      font-size: 22px;
+      font-weight: 400;
       margin: 20px 0 30px 0;
       width: 220px;
       text-align: center;
@@ -131,6 +139,8 @@
 
     button {
       width: 220px;
+      border-radius: 0;
+      box-shadow: 4px 4px 0 rgba(64, 158, 255, .5);
     }
 
     /deep/ .el-form-item__label {
@@ -144,14 +154,15 @@
 
     .code {
       vertical-align: middle;
-      background-color: white;
+      background-color: #333;
       display: inline-block;
       width: 100px;
       height: 40px;
-      border-radius: 4px;
+      border-radius: 0;
       box-sizing: border-box;
-      border: 1px solid rgba(0, 0, 0, 0);
+      border: 0;
       cursor: pointer;
+      box-shadow: 4px 4px 0 rgba(51, 51, 51, .5);
 
       svg {
         width: 100%;

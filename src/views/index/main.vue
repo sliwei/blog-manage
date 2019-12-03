@@ -5,7 +5,7 @@
       <el-col :span="10">
         <el-card class="box-card" shadow="hover">
           <div slot="header" class="clearfix">
-            <span>服务器状态 <span class="constants"> <i :style="`background-color: ${sys.constants ? 'green' : 'red'}`"></i> {{sys.constants ? '服务器运行正常' : '服务器异常'}}</span></span>
+            <span>服务器状态 <span class="constants"> <i :style="`background-color: ${sys.constants ? '#4CAF50' : '#F44336'}`"></i> {{sys.constants ? '服务器运行正常' : '服务器异常'}}</span></span>
           </div>
           <div>
             <p>服务器主机名：

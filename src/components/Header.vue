@@ -6,7 +6,7 @@
 
     <div class="menu">
       <el-dropdown trigger="click" @command="fun">
-        <el-tag size="small">
+        <el-tag>
           <span class="el-dropdown-link">
             你好,{{name}}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
