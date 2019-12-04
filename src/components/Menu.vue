@@ -1,6 +1,9 @@
 <template>
   <div class="menu_cont">
     <el-menu
+        background-color="#001529"
+        text-color="#A1A1A1"
+        active-text-color="#FFFFFF"
         :collapse-transition="false"
         :collapse="isCollapse"
         router
