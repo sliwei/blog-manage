@@ -15,7 +15,7 @@
         </el-table-column>
         <el-table-column
             prop="name"
-            label="名称">
+            label="标签名称">
         </el-table-column>
         <el-table-column
             prop="address"

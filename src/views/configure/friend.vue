@@ -9,18 +9,18 @@
 
       <el-table
           :data="friendList"
-          style="width: 100%">
+          style="width: 100%" v-if="friendList.length">
         <el-table-column
             type="index"
             width="50">
         </el-table-column>
         <el-table-column
             prop="title"
-            label="名称">
+            label="站点名称">
         </el-table-column>
         <el-table-column
             prop="website"
-            label="站点">
+            label="站点链接">
         </el-table-column>
         <el-table-column
             prop="address"
@@ -28,7 +28,7 @@
             width="230">
           <template slot-scope="scope">
             <a target="_blank" :href="scope.row.website">
-              <el-button size="mini">去看看</el-button>
+              <el-button size="mini">访问</el-button>
             </a>
             <span>
                     <el-button size="mini" type="primary" @click="edit(scope.row)">修改</el-button>
@@ -47,6 +47,16 @@
           </template>
         </el-table-column>
       </el-table>
+
+      <div class="skeleton" style="height: 500px;width: 100%" v-else>
+        <ul style="margin: 0;padding: 0">
+          <li style="width: 100%" class="skeleton-content"></li>
+          <li style="width: 100%" class="skeleton-content"></li>
+          <li style="width: 100%" class="skeleton-content"></li>
+          <li style="width: 100%" class="skeleton-content"></li>
+          <li style="width: 100%" class="skeleton-content"></li>
+        </ul>
+      </div>
 
     </div>
 

@@ -20,7 +20,7 @@ Vue.use(Router);
 // ps:
 // 有子路由的情况，路由name不设置
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   routes: [
 
     // 登录

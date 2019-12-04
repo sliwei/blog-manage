@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <router-link to="/admin">
-      <h1>博客管理</h1>
+      <h1>博客后台管理系统</h1>
     </router-link>
 
     <div class="menu">
