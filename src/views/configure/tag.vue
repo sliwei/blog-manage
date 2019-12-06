@@ -137,6 +137,8 @@
               } else {
                 this.$message.error(res.message);
               }
+            }).catch(() => {
+              this.wait = false;
             })
           } else {
             console.log('error submit!!');
