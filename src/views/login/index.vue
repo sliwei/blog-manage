@@ -17,7 +17,7 @@
 
         <el-form-item prop="gtCode" label="验证">
           <div id="captcha">
-            <p class="code_load" v-if="codeLoadSta">正在加载验证码......</p>
+            <p class="code_load" v-if="codeLoadSta">验证加载中...</p>
           </div>
         </el-form-item>
 
@@ -52,15 +52,17 @@
           user: [{ required: true, message: ' '}],
           password: [{ required: true, message: ' '}],
           // code: [{ required: true, message: ' '}],
-          gtCode: [{validator: gtCodeRule, trigger: ['blur', 'change']}],
+          gtCode: [{ required: true, message: ' '}, {validator: gtCodeRule, trigger: ['blur', 'change']}],
         },
         svg: '',
         dat: {
           user: '',
           password: '',
-          code: '',
-          key: '',
+          gtCode: '1',
+          // code: '',
+          // key: '',
         },
+        captchaObj: null,
         codeLoadSta: true
       }
     },
@@ -80,7 +82,7 @@
         })
       },
       handler(captchaObj) {
-        console.log(captchaObj);
+        this.captchaObj = captchaObj;
         let _this = this;
         captchaObj.appendTo('#captcha'); // 同时插入三个input表单时，geetest_challenge, geetest_validate, geetest_seccode
         captchaObj.onReady(function () {
@@ -134,8 +136,10 @@
                 sessionStorage.setItem('id', res.data.id);
               } else if (res.code === 1) {
                 // this.getCode();
+                this.captchaObj && this.captchaObj.reset();
                 this.$message.error(res.message);
               } else {
+                this.captchaObj && this.captchaObj.reset();
                 this.$message.error(res.message);
               }
             })
