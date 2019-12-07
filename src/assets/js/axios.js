@@ -9,15 +9,6 @@ axios.defaults.timeout = 8000;
 // 异常处理
 const error = (dat = {}) => {
   switch (parseInt(dat.code)) {
-    case 0:
-      Message.error(dat.message);
-      break;
-    case 1:
-      Message.error(dat.message);
-      break;
-    case 200:
-      Message.error(dat.message);
-      break;
     case 400:
       Message.error(dat.message);
       break;
@@ -57,9 +48,11 @@ axios.interceptors.request.use(function (req) {
 // 响应拦截器
 axios.interceptors.response.use(function (res) {
   NProgress.done();
-  if (res.data.code === 200) {
+  // 请求返回状态码0～200为请求正常，200为业务正常，0～199其他为普通业务异常（需将异常返回到页面）
+  if (res.data.code >= 0 && res.data.code <= 200) {
     return res;
   } else {
+    // -1为严重业务异常（可不返回到页面，直接终止），200+为请求异常
     error(res.data);
     return {};
   }
