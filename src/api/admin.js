@@ -13,6 +13,16 @@ import fetch from '@/assets/js/axios';
 // 8
 // 9
 // 10
+// 222
+// 222
+// 222
+// 222
+// 222
+// 222
+// 222
+// 222
+// 222
+// 222
 const sys = () => fetch('/blog/manage/admin/sys', {type: 'GET'});
 
 export {
