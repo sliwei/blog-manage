@@ -11,6 +11,8 @@ const Examine = () => import(/* webpackChunkName: "Examine" */ '@/views/examine'
 const ExamineMain = () => import(/* webpackChunkName: "ExamineMain" */ '@/views/examine/main');
 const Configure = () => import(/* webpackChunkName: "Configure" */ '@/views/configure');
 const ConfigureMain = () => import(/* webpackChunkName: "ConfigureMain" */ '@/views/configure/main');
+const Devops = () => import(/* webpackChunkName: "Devops" */ '@/views/devops');
+const DevopsMain = () => import(/* webpackChunkName: "DevopsMain" */ '@/views/devops/main');
 
 // Error
 const Error = () => import(/* webpackChunkName: "Error" */ '@/components/Error');
@@ -71,6 +73,18 @@ export default new Router({
             children:
               [
                 {path: '/', name: 'ConfigureMain', component: ConfigureMain, meta: {title: '基础配置', isShow: true}}, // 标签、网备、友链
+              ]
+          },
+
+          // 配置
+          {
+            path: 'devops',
+            name: 'Devops',
+            component: Devops,
+            meta: {title: '部署', isShow: true, icon: 'el-icon-box'},
+            children:
+              [
+                {path: '/', name: 'DevopsMain', component: DevopsMain, meta: {title: '打包部署', isShow: true}}, // 标签、网备、友链
               ]
           },
 

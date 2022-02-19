@@ -38,7 +38,8 @@ import {
   DropdownItem,
   DropdownMenu,
   Tabs,
-  Message
+  Message,
+  Empty
 } from 'element-ui';
 
 Vue.use(Menu);
@@ -72,6 +73,7 @@ Vue.use(Dropdown);
 Vue.use(DropdownItem);
 Vue.use(DropdownMenu);
 Vue.use(Tabs);
+Vue.use(Empty);
 Vue.prototype.$message = Message;
 Vue.config.productionTip = false;
 Vue.prototype.$Axios = Axios;
