@@ -7,6 +7,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const conf = require('./config');
+const UploadOss = require('./plugin/UploadOss')
 
 const FILE_ENV = process.env.ENV || 'dev';
 const NODE_ENV = conf[FILE_ENV].NODE_ENV;
@@ -368,6 +369,9 @@ const env = {
         children: true,
         minChunks: 3
       }),
+      new UploadOss({
+        prefix: 'static/blog-manage/'
+      })
     ],
   }
 };
