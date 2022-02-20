@@ -1,5 +1,5 @@
 #online
-NAME="blog-serve"
+NAME="blog-manage"
 ROOT="/data/git/${NAME}"
 RUN="/data/wwwroot/${NAME}"
 
