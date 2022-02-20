@@ -32,7 +32,7 @@
               label="操作"
               width="300">
             <template slot-scope="scope">
-              <a target="_blank" :href="scope.row.website">
+              <a v-if="scope.row.url" target="_blank" :href="scope.row.url">
                 <el-button size="mini">访问</el-button>
               </a>
               <span>
