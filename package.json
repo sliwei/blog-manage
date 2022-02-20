@@ -11,7 +11,7 @@
     "build:prod": "cross-env ENV=prod webpack"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.2",
     "babel-polyfill": "^6.26.0",
     "element-ui": "^2.4.11",
     "js-md5": "^0.7.3",
