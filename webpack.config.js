@@ -18,7 +18,7 @@ console.warn(`ENV环境为：${NODE_ENV}`);
 console.warn(`配置文件为：${FILE_ENV}\n`);
 
 const url = 'https://i.bstu.cn/'
-const prefix = `aaaa/static/blog-manage/${FILE_ENV}/${version}/`
+const prefix = `static/blog-manage/${FILE_ENV}/${version}/`
 
 const env = {
   development: {
