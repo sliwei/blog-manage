@@ -19,7 +19,7 @@ local RUN="/data/wwwroot/" + NAME;
         ],
         "commands": [
           "yarn",
-          "yarn build",
+          "yarn build:prod",
           "mkdir -p "+RUN,
           "cp -rf "+ROOT+"/dist/prod/index.html "+RUN+"/index.html"
         ]
