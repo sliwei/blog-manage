@@ -8,6 +8,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const conf = require('./config');
 const UploadOss = require('./plugin/UploadOss')
+const {version} = require('./package.json')
 
 const FILE_ENV = process.env.ENV || 'dev';
 const NODE_ENV = conf[FILE_ENV].NODE_ENV;
@@ -15,6 +16,9 @@ const NODE_ENV = conf[FILE_ENV].NODE_ENV;
 // 环境 development
 console.warn(`ENV环境为：${NODE_ENV}`);
 console.warn(`配置文件为：${FILE_ENV}\n`);
+
+const url = 'https://i.bstu.cn/'
+const prefix = `aaaa/static/blog-manage/${FILE_ENV}/${version}/`
 
 const env = {
   development: {
@@ -161,7 +165,7 @@ const env = {
       path: path.resolve(__dirname, conf[FILE_ENV].dist),
       filename: 'static/js/[name].[chunkhash:5].chunk.js',
       chunkFilename: 'static/js/[name].[chunkhash:5].chunk.js',
-      publicPath: conf[FILE_ENV].publicPath
+      publicPath: url + prefix
     },
     stats: {
       colors: true,
@@ -370,7 +374,7 @@ const env = {
         minChunks: 3
       }),
       new UploadOss({
-        prefix: 'static/blog-manage/'
+        prefix
       })
     ],
   }
