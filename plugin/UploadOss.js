@@ -35,7 +35,7 @@ class UploadOss {
           file: fs.createReadStream(path.resolve(compilation.outputOptions.path, fixname)) // 单个文件形式
         }
         request.post({
-          url: "http://core-serve:3000/core/oss/build_upload", formData
+          url: "https://api.bstu.cn/core/oss/build_upload", formData
         }, function (error, response, body) {
           currentUploadedCount++;
           if (error) {
