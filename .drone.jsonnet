@@ -1,5 +1,4 @@
 local NAME="blog-manage";
-local ROOT="/drone/src";
 local RUN="/data/wwwroot/" + NAME;
 
 [
@@ -21,7 +20,7 @@ local RUN="/data/wwwroot/" + NAME;
           "yarn",
           "yarn build:prod",
           "mkdir -p "+RUN,
-          "cp -rf "+ROOT+"/dist/prod/index.html "+RUN+"/index.html"
+          "cp -rf dist/prod/index.html "+RUN+"/index.html"
         ]
       },
       {
