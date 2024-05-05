@@ -1,5 +1,5 @@
 local NAME="blog-manage";
-local RUN="/data/wwwroot/" + NAME;
+local SOURCE="/data/docker/awei/" + NAME+"/source/";
 
 [
   {
@@ -25,18 +25,19 @@ local RUN="/data/wwwroot/" + NAME;
       },
       {
         "name": "build & copy",
-        "image": "node:14",
+        "image": "node:14.17.1-alpine",
         "volumes": [
           {
-            "name": "run-conf",
-            "path": RUN
+            "name": "source-conf",
+            "path": SOURCE
           }
         ],
         "commands": [
           "yarn",
           "yarn build:prod",
-          "mkdir -p "+RUN,
-          "cp -rf dist/prod/index.html "+RUN+"/index.html"
+          "mkdir -p "+SOURCE, # 创建源码目录
+          "rm -rf "+SOURCE+"*", # 删除以前的源码
+          "cp -rf dist/prod/index.html "+SOURCE+"/index.html"
         ]
       },
       {
@@ -54,6 +55,26 @@ local RUN="/data/wwwroot/" + NAME;
             "path": "/cache"
           }
         ]
+      },
+      {
+        "name": "up",
+        "image": "appleboy/drone-ssh",
+        "settings": {
+          "host": "2024.bstu.cn",
+          "username": "root",
+          "key": {
+            "from_secret": "drone_id_rsa"
+          },
+          "port": 22,
+          "command_timeout": "10m",
+          "script_stop": false,
+          "script": [
+            "cd "+SOURCE,
+            // "docker build -t "+NAME+" .",
+            "cd ..",
+            "docker compose up -d"
+          ]
+        }
       },
       {
         "name": "notify",
@@ -78,9 +99,15 @@ local RUN="/data/wwwroot/" + NAME;
     ],
     "volumes": [
       {
-        "name": "run-conf",
+        "name": "source-conf",
         "host": {
-          "path": RUN
+          "path": SOURCE
+        }
+      },
+      {
+        "name": "cache",
+        "host": {
+          "path": "/tmp/cache"
         }
       }
     ]
