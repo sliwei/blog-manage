@@ -27,7 +27,7 @@ jobs:
         run: yarn
 
       - name: Build
-        run: yarn build:prod
+        run: yarn build:live
 
       - name: Upload
         uses: manyuanrong/setup-ossutil@v2.0
