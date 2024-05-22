@@ -7,8 +7,6 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const conf = require('./config');
-const UploadOss = require('./plugin/UploadOss')
-const {version} = require('./package.json')
 
 const FILE_ENV = process.env.ENV || 'dev';
 const NODE_ENV = conf[FILE_ENV].NODE_ENV;
@@ -16,9 +14,6 @@ const NODE_ENV = conf[FILE_ENV].NODE_ENV;
 // 环境 development
 console.warn(`ENV环境为：${NODE_ENV}`);
 console.warn(`配置文件为：${FILE_ENV}\n`);
-
-const url = 'https://i.bstu.cn/'
-const prefix = `static/blog-manage/${FILE_ENV}/${version}/`
 
 const env = {
   development: {
@@ -162,10 +157,11 @@ const env = {
   production: {
     devtool: false,
     output: {
-      path: path.resolve(__dirname, conf[FILE_ENV].dist),
+      path: path.resolve(__dirname, 'dist'),
       filename: 'static/js/[name].[chunkhash:5].chunk.js',
       chunkFilename: 'static/js/[name].[chunkhash:5].chunk.js',
-      publicPath: url + prefix
+      // publicPath: url + prefix
+      publicPath: './'
     },
     stats: {
       colors: true,
@@ -373,9 +369,9 @@ const env = {
         children: true,
         minChunks: 3
       }),
-      new UploadOss({
-        prefix
-      })
+      // new UploadOss({
+      //   prefix
+      // })
     ],
   }
 };
